@@ -1,0 +1,32 @@
+{
+  "name": "bookshelf-api",
+  "version": "1.0.0",
+  "description": "Proyek Akhir Kelas Belajar Membuat Aplikasi Back-End untuk Pemula oleh Dicoding - Bookshelf API",
+  "main": "src/server.js",
+  "scripts": {
+	"prod": "NODE_ENV=production node ./src/server.js",
+    "dev": "nodemon ./src/server.js",
+    "lint": "eslint ./src",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "dicoding",
+    "bookshelf-api",
+    "hapi",
+    "backend-course"
+  ],
+  "author": "Rocky Prabowo <rocky@lazycats.id>",
+  "license": "ISC",
+  "devDependencies": {
+    "eslint": "^8.10.0",
+    "eslint-config-standard": "17.0.0-1",
+    "eslint-plugin-import": "^2.25.4",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-promise": "^6.0.0",
+    "nodemon": "^2.0.15"
+  },
+  "dependencies": {
+    "@hapi/hapi": "^20.2.1",
+    "nanoid": "^3.3.1"
+  }
+}
