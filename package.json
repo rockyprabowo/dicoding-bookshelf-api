@@ -4,7 +4,7 @@
   "description": "Proyek Akhir Kelas Belajar Membuat Aplikasi Back-End untuk Pemula oleh Dicoding - Bookshelf API",
   "main": "src/server.js",
   "scripts": {
-	"prod": "NODE_ENV=production node ./src/server.js",
+    "prod": "NODE_ENV=production node ./src/server.js",
     "dev": "nodemon ./src/server.js",
     "lint": "eslint ./src",
     "test": "echo \"Error: no test specified\" && exit 1"
