@@ -17,9 +17,10 @@ const addBookHandler = (request, h) => {
   }
 
   if (error.length > 0) {
+    const firstError = error[0]
     const response = h.response({
       status: 'fail',
-      message: `${error[0].failureMessage}`
+      message: `${firstError.failureMessage}`
     })
     response.code(400)
     return response
@@ -45,7 +46,7 @@ const getBooksHandler = (request, h) => {
         .filter((book) => name ? book.name.toLowerCase().includes(nameQuery) : true)
         .filter((book) => reading ? book.reading === Boolean(+reading) : true)
         .filter((book) => finished ? book.finished === Boolean(+finished) : true)
-        .map(Books.getAllFieldMap)
+        .map(Books.getAllPropsMapper)
     }
   })
   response.code(200)
@@ -78,7 +79,6 @@ const getBookHandler = (request, h) => {
 const updateBookHandler = (request, h) => {
   const { id } = request.params
   const bookData = Books.sanitizePayload(request.payload)
-
   const { success, error } = Books.update(id, bookData)
 
   if (success) {
@@ -91,9 +91,10 @@ const updateBookHandler = (request, h) => {
   }
 
   if (error.length > 0) {
+    const firstError = error[0]
     const response = h.response({
       status: 'fail',
-      message: `${error[0].failureMessage}`
+      message: `${firstError.failureMessage}`
     })
     response.code(400)
     return response

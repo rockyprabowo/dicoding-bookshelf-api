@@ -26,7 +26,7 @@ class BookCollection {
   sanitizePayload = ({ name, year, author, summary, publisher, pageCount, readPage, reading }) =>
     ({ name, year, author, summary, publisher, pageCount, readPage, reading })
 
-  getAllFieldMap = ({ id, name, publisher }) => ({ id, name, publisher })
+  getAllPropsMapper = ({ id, name, publisher }) => ({ id, name, publisher })
 
   exists (id) {
     return this.#filterById(id).length > 0
