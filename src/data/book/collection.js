@@ -1,5 +1,5 @@
 const Book = require('./book')
-const BookDataValidator = require('../book/validator')
+const { AddBookDataValidator, UpdateBookDataValidator } = require('../book/validator')
 const { BookResult, BookOperationResult } = require('./result')
 
 class BookCollection {
@@ -47,7 +47,7 @@ class BookCollection {
   }
 
   add (bookData) {
-    const bookDataValidator = new BookDataValidator(bookData)
+    const bookDataValidator = new AddBookDataValidator(bookData)
     let added = false
     let newBook
 
@@ -68,7 +68,7 @@ class BookCollection {
   }
 
   update (id, bookData) {
-    const bookDataValidator = new BookDataValidator(bookData)
+    const bookDataValidator = new UpdateBookDataValidator(bookData)
     const { exists, index, book } = this.getById(id)
     let updated = false
 
