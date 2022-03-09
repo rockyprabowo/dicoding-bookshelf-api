@@ -9,8 +9,6 @@ class BookCollection {
     this.#books = []
   }
 
-  // TODO: For optional challenge completion, extend filtering capability to any Book properties (not just id)
-
   #filterById (id) {
     return this.#books.filter((book) => book.id === id)
   }
@@ -58,7 +56,7 @@ class BookCollection {
 
     added = this.exists(newBook?.id) && bookDataValidator.validated
 
-    console.log(`Book ${newBook ? 'dengan id ' + newBook.id : ''}${added ? 'sukses' : 'gagal'} ditambahkan.`)
+    console.log(`Book${newBook ? ' dengan id ' + newBook.id : ''} ${added ? 'sukses' : 'gagal'} ditambahkan.`)
 
     return new BookOperationResult({
       success: added,

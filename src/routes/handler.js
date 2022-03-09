@@ -86,7 +86,7 @@ const updateBookHandler = (request, h) => {
       status: 'success',
       message: 'Buku berhasil diperbarui'
     })
-    response.code(201)
+    response.code(200)
     return response
   }
 
