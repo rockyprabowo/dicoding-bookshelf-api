@@ -2,7 +2,6 @@ const Books = require('../data/book')
 
 const addBookHandler = (request, h) => {
   const newBook = Books.sanitizePayload(request.payload)
-
   const { success, id, error } = Books.add(newBook)
 
   if (success) {
@@ -34,8 +33,39 @@ const addBookHandler = (request, h) => {
   return response
 }
 
-const getAllBookHandler = () => {}
-const getBookHandler = () => {}
+const getAllBookHandler = (request, h) => {
+  const response = h.response({
+    status: 'success',
+    data: {
+      books: Books.getAll().map(Books.getAllFieldMap)
+    }
+  })
+  response.code(200)
+  return response
+}
+
+const getBookHandler = (request, h) => {
+  const { id } = request.params
+  const { exists, book } = Books.getById(id)
+
+  if (exists) {
+    const response = h.response({
+      status: 'success',
+      data: {
+        book
+      }
+    })
+    response.code(200)
+    return response
+  }
+
+  const response = h.response({
+    status: 'fail',
+    message: 'Buku tidak ditemukan'
+  })
+  response.code(404)
+  return response
+}
 
 const updateBookHandler = (request, h) => {
   const { id } = request.params
@@ -69,6 +99,26 @@ const updateBookHandler = (request, h) => {
   return response
 }
 
-const removeBookHandler = () => {}
+const removeBookHandler = (request, h) => {
+  const { id } = request.params
+
+  const { success } = Books.delete(id)
+
+  if (success) {
+    const response = h.response({
+      status: 'success',
+      message: 'Buku berhasil dihapus'
+    })
+    response.code(200)
+    return response
+  }
+
+  const response = h.response({
+    status: 'fail',
+    message: 'Buku gagal dihapus. Id tidak ditemukan'
+  })
+  response.code(404)
+  return response
+}
 
 module.exports = { addBookHandler, getAllBookHandler, getBookHandler, updateBookHandler, removeBookHandler }
