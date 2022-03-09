@@ -1,4 +1,5 @@
 const Book = require('./book')
+const BookDataValidator = require('../book/validator')
 const { BookResult, BookOperationResult } = require('./result')
 
 class BookCollection {
@@ -22,8 +23,15 @@ class BookCollection {
     return this.#filterById(id)[0]
   }
 
+  // https://stackoverflow.com/questions/54114960/reconstruct-partial-deconstructed-object-es6
+  // https://stackoverflow.com/a/54115176/12604639
+  sanitizePayload = ({ name, year, author, summary, publisher, pageCount, readPage, reading }) =>
+    ({ name, year, author, summary, publisher, pageCount, readPage, reading })
+
+  getAllFieldMap = ({ id, name, publisher }) => ({ id, name, publisher })
+
   exists (id) {
-    return this.#filterById().length > 0
+    return this.#filterById(id).length > 0
   }
 
   getAll () {
@@ -38,29 +46,36 @@ class BookCollection {
     })
   }
 
-  add (validatedBookData) {
-    const newBook = new Book(validatedBookData)
+  add (bookData) {
+    const bookDataValidator = new BookDataValidator(bookData)
+    let added = false
+    let newBook
 
-    this.#books.push(newBook)
+    if (bookDataValidator.validate()) {
+      newBook = new Book(bookData)
+      this.#books.push(newBook)
+    }
 
-    const added = this.exists(newBook.id)
+    added = this.exists(newBook?.id) && bookDataValidator.validated
 
-    console.log(`Book dengan id ${newBook.id} ${added ? 'sukses' : 'gagal'} ditambahkan.`)
+    console.log(`Book ${newBook ? 'dengan id ' + newBook.id : ''}${added ? 'sukses' : 'gagal'} ditambahkan.`)
 
     return new BookOperationResult({
       success: added,
-      id: newBook.id
+      id: newBook?.id,
+      error: bookDataValidator.failures
     })
   }
 
-  update (id, validatedBookData) {
+  update (id, bookData) {
+    const bookDataValidator = new BookDataValidator(bookData)
     const { exists, index, book } = this.getById(id)
     let updated = false
 
-    if (exists) {
+    if (exists && bookDataValidator.validate()) {
       const updatedBook = new Book({
         ...book,
-        ...validatedBookData
+        ...bookData
       })
       updatedBook.updateTimestamp()
       this.#books[index] = updatedBook
@@ -71,7 +86,8 @@ class BookCollection {
 
     return new BookOperationResult({
       success: updated,
-      id
+      id,
+      error: bookDataValidator.failures
     })
   }
 

@@ -1,4 +1,4 @@
-const nanoid = require('nanoid')
+const { nanoid } = require('nanoid')
 
 class Book {
   constructor ({ id, name, year, author, summary, publisher, pageCount, readPage, reading, insertedAt }) {
@@ -20,6 +20,13 @@ class Book {
   }
 
   get finished () { return this.pageCount === this.readPage }
+
+  toJSON () {
+    return {
+      ...this,
+      finished: this.finished
+    }
+  }
 }
 
 module.exports = Book
