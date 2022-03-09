@@ -17,6 +17,10 @@
   ],
   "author": "Rocky Prabowo <rocky@lazycats.id>",
   "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/rockyprabowo/dicoding-bookshelf-api.git"
+  },
   "devDependencies": {
     "eslint": "^8.10.0",
     "eslint-config-standard": "17.0.0-1",
