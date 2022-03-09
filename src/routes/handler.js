@@ -33,11 +33,19 @@ const addBookHandler = (request, h) => {
   return response
 }
 
-const getAllBookHandler = (request, h) => {
+const getBooksHandler = (request, h) => {
+  const { name, reading, finished } = request.query
+  const nameQuery = name?.toLowerCase()
+  const books = Books.getAll()
+
   const response = h.response({
     status: 'success',
     data: {
-      books: Books.getAll().map(Books.getAllFieldMap)
+      books: books
+        .filter((book) => name ? book.name.toLowerCase().includes(nameQuery) : true)
+        .filter((book) => reading ? book.reading === Boolean(+reading) : true)
+        .filter((book) => finished ? book.finished === Boolean(+finished) : true)
+        .map(Books.getAllFieldMap)
     }
   })
   response.code(200)
@@ -102,7 +110,7 @@ const updateBookHandler = (request, h) => {
 const removeBookHandler = (request, h) => {
   const { id } = request.params
 
-  const { success } = Books.delete(id)
+  const { success } = Books.remove(id)
 
   if (success) {
     const response = h.response({
@@ -121,4 +129,4 @@ const removeBookHandler = (request, h) => {
   return response
 }
 
-module.exports = { addBookHandler, getAllBookHandler, getBookHandler, updateBookHandler, removeBookHandler }
+module.exports = { addBookHandler, getBooksHandler, getBookHandler, updateBookHandler, removeBookHandler }
